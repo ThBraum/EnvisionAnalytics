@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  web:
+    build:
+      context: ./src/EnvisionAnalytics.Web
+      dockerfile: Dockerfile
+    ports:
+      - "${HOST_PORT:-8000}:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=db;Database=envision;Username=postgres;Password=postgres
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: envision
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+  precommit:
+    build:
+      context: .
+      dockerfile: Dockerfile.precommit
+    volumes:
+      - ./:/workdir
+    entrypoint: ["/bin/sh", "-c", "pre-commit run --all-files || true"]
+    working_dir: /workdir
+    networks:
+      - default
+
+volumes:
+  pgdata:

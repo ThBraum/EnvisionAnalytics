@@ -1,0 +1,21 @@
+# Ignore build artifacts and IDE files to keep context small
+bin/
+obj/
+*/bin/
+*/obj/
+.vs/
+.vscode/
+.idea/
+.git
+.gitignore
+*.md
+*.log
+logs/
+*.db
+
+# Dockerfiles and compose overrides are not needed in context
+Dockerfile
+docker-compose*.yml
+
+# Node and other
+node_modules/

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EnvisionAnalytics - @ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/site.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">EnvisionAnalytics</a>
+            <div class="d-flex">
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <span class="navbar-text text-light me-2">@User.Identity.Name</span>
+                    <form method="post" asp-controller="Account" asp-action="Logout"> 
+                        <button class="btn btn-sm btn-outline-light">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-outline-light me-2" href="/Account/Login">Login</a>
+                    <a class="btn btn-sm btn-outline-light" href="/Account/Register">Register</a>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        @RenderBody()
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

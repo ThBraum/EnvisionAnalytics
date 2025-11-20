@@ -1,0 +1,41 @@
+# macOS
+.DS_Store
+
+# IDEs
+.vs/
+.idea/
+.vscode/
+
+# Build directories
+bin/
+obj/
+*/bin/
+*/obj/
+
+# Publish output
+publish/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.csproj.user
+*.sln.docstates
+
+# Logs and databases
+logs/
+*.log
+*.db
+
+# Secrets / local config
+secrets.json
+secrets.*.json
+appsettings.*.Local.json
+
+# Docker override
+docker-compose.override.yml
+
+# Other
+Thumbs.db
+
+.env

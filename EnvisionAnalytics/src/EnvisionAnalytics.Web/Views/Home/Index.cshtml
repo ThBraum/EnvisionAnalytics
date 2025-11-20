@@ -1,0 +1,102 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Dashboard</h1>
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h6>Receita hoje</h6>
+            <h3>@String.Format("{0:C}", ViewData["RevenueToday"])</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h6>Pedidos hoje</h6>
+            <h3>@ViewData["OrdersToday"]</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h6>Usuários ativos (7d)</h6>
+            <h3>@ViewData["ActiveUsers"]</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card p-3">
+            <h5>Receita / Pedidos (últimos 30 dias)</h5>
+            <canvas id="chartRevenue" height="120"></canvas>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>Eventos recentes</h5>
+            <ul id="events" class="list-unstyled small"></ul>
+        </div>
+    </div>
+</div>
+
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h6>Usuários online</h6>
+                <h2 id="usersOnline">0</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h6>Pedidos (últimos 10m)</h6>
+                <h2 id="ordersLast10m">0</h2>
+            </div>
+        </div>
+    </div>
+
+@section Scripts {
+<script>
+async function loadRevenue(){
+    const resp = await fetch('/Home/RevenueByDay?days=30');
+    const data = await resp.json();
+    const labels = data.map(r=> new Date(r.date).toLocaleDateString());
+    const revenue = data.map(r=> r.revenue);
+    const orders = data.map(r=> r.orders);
+
+    const ctx = document.getElementById('chartRevenue');
+    new Chart(ctx, { type: 'line', data: { labels: labels, datasets: [{ label: 'Receita', data: revenue, borderColor: 'rgba(75,192,192,1)', tension:0.2 }, { label: 'Pedidos', data: orders, borderColor: 'rgba(192,75,75,1)', tension:0.2, yAxisID: 'y2' }] }, options: { scales: { y: { beginAtZero:true }, y2: { position: 'right', beginAtZero:true, grid: { drawOnChartArea: false } } } } });
+}
+
+loadRevenue();
+
+// SignalR for live events (simple)
+const hub = new signalR.HubConnectionBuilder().withUrl('/hubs/dashboard').build();
+hub.on('event', msg => {
+    const el = document.getElementById('events');
+    const li = document.createElement('li');
+    // if msg is an object, show structured info
+    if (typeof msg === 'object') {
+        const t = msg.type || msg.type;
+        const ts = msg.timestamp ? new Date(msg.timestamp).toLocaleString() : new Date().toLocaleTimeString();
+        const m = msg.message || (msg.type === 'OrderCreated' ? `Order ${msg.orderId} $${msg.amount}` : JSON.stringify(msg));
+        li.textContent = `${ts} - ${t}: ${m}`;
+    } else {
+        li.textContent = `${new Date().toLocaleTimeString()} - ${msg}`;
+    }
+    el.prepend(li);
+});
+
+hub.on('usersOnline', cnt => {
+    const e = document.getElementById('usersOnline');
+    if (e) e.textContent = cnt;
+});
+
+hub.on('ordersLast10m', cnt => {
+    const e = document.getElementById('ordersLast10m');
+    if (e) e.textContent = cnt;
+});
+
+hub.start();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.11/signalr.min.js"></script>
+}

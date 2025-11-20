@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+
+if command -v docker-compose >/dev/null 2>&1; then
+    docker-compose run --rm precommit pre-commit run --hook-stage commit
+else
+    docker compose run --rm precommit pre-commit run --hook-stage commit
+fi

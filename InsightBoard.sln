@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EnvisionAnalytics", "EnvisionAnalytics", "{4485F363-7663-8C8A-B929-C02868AAD301}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E28BCD5A-CD53-BF8F-F60C-265B1D033FAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvisionAnalytics.Web", "EnvisionAnalytics\src\EnvisionAnalytics.Web\EnvisionAnalytics.Web.csproj", "{1B43667F-8F92-9F55-957D-C9A24D57CB90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B43667F-8F92-9F55-957D-C9A24D57CB90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B43667F-8F92-9F55-957D-C9A24D57CB90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B43667F-8F92-9F55-957D-C9A24D57CB90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B43667F-8F92-9F55-957D-C9A24D57CB90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E28BCD5A-CD53-BF8F-F60C-265B1D033FAA} = {4485F363-7663-8C8A-B929-C02868AAD301}
+		{1B43667F-8F92-9F55-957D-C9A24D57CB90} = {E28BCD5A-CD53-BF8F-F60C-265B1D033FAA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7BA3321A-5054-4F45-8523-7F0FF483E9A7}
+	EndGlobalSection
+EndGlobal
