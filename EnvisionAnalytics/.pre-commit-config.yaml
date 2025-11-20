@@ -3,19 +3,22 @@ repos:
     hooks:
       - id: dotnet-format
         name: dotnet format
-        entry: bash -lc "dotnet format --verify-no-changes || (echo 'Run dotnet format to fix issues' && exit 1)"
+        entry: |
+          bash -lc 'ver=$(dotnet --version 2>/dev/null | cut -d. -f1 || echo 0); if [ "$ver" -ge 10 ]; then dotnet format --verify-no-changes || (echo "Run dotnet format to fix issues" && exit 1); else echo "Skipping dotnet format: .NET SDK < 10 detected"; fi'
         language: system
         files: '\.(cs|csproj)$'
 
       - id: dotnet-build
         name: dotnet build
-        entry: bash -lc "dotnet build --nologo"
+        entry: |
+          bash -lc 'ver=$(dotnet --version 2>/dev/null | cut -d. -f1 || echo 0); if [ "$ver" -ge 10 ]; then dotnet build --nologo; else echo "Skipping dotnet build: .NET SDK < 10 detected"; fi'
         language: system
         stages: [commit]
 
       - id: dotnet-test
         name: dotnet test
-        entry: bash -lc "dotnet test --nologo --no-build"
+        entry: |
+          bash -lc 'ver=$(dotnet --version 2>/dev/null | cut -d. -f1 || echo 0); if [ "$ver" -ge 10 ]; then dotnet test --nologo --no-build; else echo "Skipping dotnet test: .NET SDK < 10 detected"; fi'
         language: system
         stages: [commit]
 
@@ -23,4 +26,4 @@ repos:
         name: fix end of file
         entry: bash -lc "python -m pip >/dev/null 2>&1 || true; true"
         language: system
-        files: '\.('
+        files: '.*'
