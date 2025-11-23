@@ -14,6 +14,9 @@ docker compose up --build
 
 The web application will be available at `http://localhost:8000` and PostgreSQL will be reachable on `localhost:5432`.
 
+> **Note on seeded data**
+> The starter dataset is inserted only when the tables are empty. If you ever want to reset everything, run compose with `SEED_ALWAYS=true` (e.g., `SEED_ALWAYS=true docker compose up --build`) and the seeder will truncate the tables before inserting fresh demo rows.
+
 Initial admin user (seeded)
 - Username: `admin`
 - Email: `admin@envision.local`
