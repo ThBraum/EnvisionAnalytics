@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Linq;
 using Bogus;
@@ -59,6 +60,31 @@ namespace EnvisionAnalytics.Services
             {
                 Console.WriteLine("DataSeeder: Products table not found after migrations/EnsureCreated - skipping seeding.");
                 return;
+            }
+
+            // If SEED_ALWAYS is set (1/true) then clear existing data and re-seed every startup.
+            var seedAlwaysEnv = Environment.GetEnvironmentVariable("SEED_ALWAYS");
+            var forceSeed = !string.IsNullOrEmpty(seedAlwaysEnv) && (seedAlwaysEnv == "1" || seedAlwaysEnv.Equals("true", StringComparison.OrdinalIgnoreCase));
+            if (forceSeed)
+            {
+                Console.WriteLine("DataSeeder: SEED_ALWAYS set — clearing existing data before seeding.");
+                try
+                {
+                    await _db.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"OrderItems\" RESTART IDENTITY CASCADE; TRUNCATE TABLE \"Orders\" RESTART IDENTITY CASCADE; TRUNCATE TABLE \"Events\" RESTART IDENTITY CASCADE; TRUNCATE TABLE \"Customers\" RESTART IDENTITY CASCADE; TRUNCATE TABLE \"Products\" RESTART IDENTITY CASCADE;");
+                }
+                catch
+                {
+                    try
+                    {
+                        _db.OrderItems.RemoveRange(_db.OrderItems);
+                        _db.Orders.RemoveRange(_db.Orders);
+                        _db.Events.RemoveRange(_db.Events);
+                        _db.Customers.RemoveRange(_db.Customers);
+                        _db.Products.RemoveRange(_db.Products);
+                        await _db.SaveChangesAsync();
+                    }
+                    catch { }
+                }
             }
 
             if (await _db.Products.AnyAsync()) return;

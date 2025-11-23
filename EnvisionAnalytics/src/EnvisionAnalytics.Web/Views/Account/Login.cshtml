@@ -1,10 +1,45 @@
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
+    ViewData["Title"] = Localizer["LoginTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Login</h3>
-<form method="post" asp-action="Login">
-    <div class="mb-3"><label>Email</label><input name="email" class="form-control" /></div>
-    <div class="mb-3"><label>Password</label><input name="password" type="password" class="form-control" /></div>
-    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
-    <button class="btn btn-primary">Login</button>
-</form>
+
+<section class="auth-page gradient-bg">
+    <div class="container py-5 position-relative">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <partial name="_Hero" view-data='new ViewDataDictionary(ViewData) { ["HeroVariant"] = "login" }' />
+            </div>
+            <div class="col-lg-5 ms-lg-auto">
+                <div class="auth-card shadow-lg">
+                    <h2 class="h3 mb-2">@Localizer["LoginTitle"]</h2>
+                    <p class="text-muted mb-4">@Localizer["AccessDashboard"]</p>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <form method="post" asp-action="Login" class="auth-form">
+                        <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+                        <div class="mb-4">
+                            <label for="loginEmail" class="form-label">@Localizer["LoginEmailLabel"]</label>
+                            <input id="loginEmail" name="email" type="email" class="form-control form-control-lg" placeholder="you@company.com" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">@Localizer["LoginPasswordLabel"]</label>
+                            <div class="input-group password-input-group">
+                                <input id="loginPassword" name="password" type="password" class="form-control form-control-lg" placeholder="••••••••" required />
+                                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="loginPassword" aria-label="Show password">
+                                    <i class="bi bi-eye-slash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-end mt-2">
+                                <a class="link-light text-decoration-none" href="/Account/ForgotPassword">@Localizer["ForgotPassword"]</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-lg w-100 mt-3" type="submit">@Localizer["AccessDashboard"]</button>
+                        <p class="small text-muted mt-3">@Localizer["LoginResetHint"]</p>
+                        <p class="mt-4 mb-0 text-center text-muted">@Localizer["NewHere"] <a class="text-decoration-none" href="/Account/Register">@Localizer["RegisterLink"]</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

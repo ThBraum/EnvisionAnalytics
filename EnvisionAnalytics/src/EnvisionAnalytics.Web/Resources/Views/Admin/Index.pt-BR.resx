@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="AdminUsersTitle" xml:space="preserve"><value>Admin - Usuários</value></data>
+  <data name="User" xml:space="preserve"><value>Usuário</value></data>
+  <data name="Email" xml:space="preserve"><value>E-mail</value></data>
+  <data name="Roles" xml:space="preserve"><value>Funções</value></data>
+  <data name="RoleNamePlaceholder" xml:space="preserve"><value>Nome da função</value></data>
+  <data name="AddRoleButton" xml:space="preserve"><value>Adicionar função</value></data>
+</root>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="AppName" xml:space="preserve"><value>Envision Analytics</value></data>
+  <data name="NavHome" xml:space="preserve"><value>Inicio</value></data>
+  <data name="NavProducts" xml:space="preserve"><value>Productos</value></data>
+  <data name="NavOrders" xml:space="preserve"><value>Pedidos</value></data>
+  <data name="NavAdmin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Login" xml:space="preserve"><value>Iniciar sesión</value></data>
+  <data name="Logout" xml:space="preserve"><value>Cerrar sesión</value></data>
+  <data name="Register" xml:space="preserve"><value>Registrarse</value></data>
+  <data name="SiteTitle" xml:space="preserve"><value>Envision Analytics</value></data>
+</root>

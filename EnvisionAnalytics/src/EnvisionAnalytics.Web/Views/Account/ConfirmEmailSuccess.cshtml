@@ -1,5 +1,7 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
+    ViewData["Title"] = Localizer["ConfirmEmailSuccessTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Email Confirmed</h3>
-<p>Your email has been confirmed. You can now <a href="/Account/Login">login</a>.</p>
+<h3>@Localizer["ConfirmEmailSuccessTitle"]</h3>
+<p>@Localizer["ConfirmEmailSuccessMessage"] <a href="/Account/Login">@Localizer["Login"]</a>.</p>

@@ -1,5 +1,6 @@
 services:
   web:
+    image: envisionanalytics-web
     build:
       context: ./src/EnvisionAnalytics.Web
       dockerfile: Dockerfile
@@ -7,6 +8,7 @@ services:
       - "${HOST_PORT:-8000}:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - SEED_ALWAYS=${SEED_ALWAYS-true}
       - ConnectionStrings__Default=Host=db;Database=envision;Username=postgres;Password=postgres
     env_file:
       - .env
@@ -33,17 +35,6 @@ services:
       - "8080:80"
     depends_on:
       - db
-
-  precommit:
-    build:
-      context: .
-      dockerfile: Dockerfile.precommit
-    volumes:
-      - ./:/workdir
-    entrypoint: ["/bin/sh", "-c", "pre-commit run --all-files || true"]
-    working_dir: /workdir
-    networks:
-      - default
 
 volumes:
   pgdata:
