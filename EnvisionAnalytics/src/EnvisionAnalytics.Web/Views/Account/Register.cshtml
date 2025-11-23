@@ -1,10 +1,93 @@
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
+    ViewData["Title"] = Localizer["RegisterTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Register</h3>
-<form method="post" asp-action="Register">
-    <div class="mb-3"><label>User name</label><input name="userName" class="form-control" /></div>
-    <div class="mb-3"><label>Email</label><input name="email" class="form-control" /></div>
-    <div class="mb-3"><label>Password</label><input name="password" type="password" class="form-control" /></div>
-    <button class="btn btn-primary">Register</button>
-</form>
+
+<section class="auth-page gradient-bg">
+    <div class="container py-5 position-relative">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 order-lg-2">
+                <partial name="_Hero" view-data='new ViewDataDictionary(ViewData) { ["HeroVariant"] = "register" }' />
+            </div>
+            <div class="col-lg-5">
+                <div class="auth-card shadow-lg">
+                    <h2 class="h3 mb-2">@Localizer["RegisterTitle"]</h2>
+                    <p class="text-muted mb-4">@Localizer["CreateAccount"]</p>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <form method="post" asp-action="Register" class="auth-form" id="registerForm" novalidate>
+                        <div class="mb-4">
+                            <label for="registerUserName" class="form-label">@Localizer["UserName"]</label>
+                            <input id="registerUserName" name="userName" class="form-control form-control-lg" placeholder="alex.renner" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="registerEmail" class="form-label">@Localizer["WorkEmail"]</label>
+                            <input id="registerEmail" name="email" type="email" class="form-control form-control-lg" placeholder="you@company.com" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="registerPassword" class="form-label">@Localizer["Password"]</label>
+                            <div class="input-group password-input-group">
+                                <input id="registerPassword" name="password" type="password" class="form-control form-control-lg" placeholder="Create a password" minlength="8" required />
+                                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="registerPassword" aria-label="Show password">
+                                    <i class="bi bi-eye-slash"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted">Use at least 8 characters with numbers and symbols.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">@Localizer["ConfirmPassword"]</label>
+                            <div class="input-group password-input-group">
+                                <input id="confirmPassword" name="confirmPassword" type="password" class="form-control form-control-lg" placeholder="Repeat your password" required />
+                                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="confirmPassword" aria-label="Show password">
+                                    <i class="bi bi-eye-slash"></i>
+                                </button>
+                            </div>
+                            <div id="passwordMismatch" class="invalid-feedback d-none">Passwords must match.</div>
+                        </div>
+                        <button class="btn btn-primary btn-lg w-100 mt-3" type="submit">@Localizer["CreateAccount"]</button>
+                        <p class="mt-4 mb-0 text-center text-muted">Already a member? <a class="text-decoration-none" href="/Account/Login">Sign in</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (function () {
+            const form = document.getElementById('registerForm');
+            if (!form) return;
+            const password = document.getElementById('registerPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const mismatch = document.getElementById('passwordMismatch');
+
+            const validateMatch = () => {
+                if (!password || !confirmPassword) return true;
+                const matches = password.value && confirmPassword.value && password.value === confirmPassword.value;
+                if (matches) {
+                    mismatch?.classList.add('d-none');
+                } else if (confirmPassword.value.length > 0) {
+                    mismatch?.classList.remove('d-none');
+                } else {
+                    mismatch?.classList.add('d-none');
+                }
+                return matches;
+            };
+
+            password?.addEventListener('input', validateMatch);
+            confirmPassword?.addEventListener('input', validateMatch);
+
+            form.addEventListener('submit', (evt) => {
+                if (!validateMatch()) {
+                    evt.preventDefault();
+                    confirmPassword?.focus();
+                    if (window.showSnackbar) {
+                        window.showSnackbar(@System.Text.Json.JsonSerializer.Serialize(Localizer["PasswordsDoNotMatch"].Value), 'error');
+                    }
+                }
+            });
+        })();
+    </script>
+}

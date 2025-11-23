@@ -1,40 +1,92 @@
+@using System.Text.Json
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Dashboard</h1>
+<div class="dashboard-hero-shell text-center">
+    <div class="dashboard-hero-shell__panel dashboard-hero-shell__panel--base" aria-hidden="true"></div>
+    <div class="dashboard-hero-shell__content">
+        <div class="container py-5">
+            <partial name="_Hero" view-data='new ViewDataDictionary(ViewData) { ["HeroVariant"] = "dashboard" }' />
+            <p class="dashboard-hero-shell__disclaimer">@Localizer["HeroDisclaimer"]</p>
+        </div>
+    </div>
+</div>
+<style>
+    .chart-shell { min-height: 320px; position: relative; }
+    .chart-shell--compact { min-height: 180px; }
+    .chart-shell canvas { width: 100% !important; height: 100% !important; }
+</style>
+<script>
+    // server-provided context for currency conversion
+    const __serverCtx = @Html.Raw(JsonSerializer.Serialize(new {
+        currentCulture = ViewData["CurrentCulture"],
+        usdToBrl = ViewData["UsdToBrl"],
+        usdToArs = ViewData["UsdToArs"]
+    }));
+</script>
 <div class="row mb-4">
     <div class="col-md-4">
         <div class="card p-3">
-            <h6>Receita hoje</h6>
+            <h6>@Localizer["RevenueToday"]</h6>
             <h3>@String.Format("{0:C}", ViewData["RevenueToday"])</h3>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card p-3">
-            <h6>Pedidos hoje</h6>
+            <h6>@Localizer["OrdersToday"]</h6>
             <h3>@ViewData["OrdersToday"]</h3>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card p-3">
-            <h6>Usuários ativos (7d)</h6>
+            <h6>@Localizer["ActiveUsers"]</h6>
             <h3>@ViewData["ActiveUsers"]</h3>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="card p-3">
-            <h5>Receita / Pedidos (últimos 30 dias)</h5>
-            <canvas id="chartRevenue" height="120"></canvas>
+<div class="row g-3">
+    <div class="col-xl-8">
+        <div class="card p-3 h-100">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div>
+                    <h5 class="mb-0">@Localizer["RevenueChartTitle"]</h5>
+                    <small class="text-muted">@Localizer["RevenueChartSubtitle"]</small>
+                </div>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-download"></i> @Localizer["ExportLabel"]
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" id="exportCombinedPng">@Localizer["ExportPng"]</a></li>
+                        <li><a class="dropdown-item" href="#" id="exportCombinedCsv">@Localizer["ExportCsv"]</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chart-shell mt-3">
+                <canvas id="chartRevenueCombined"></canvas>
+            </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-xl-4">
+        <div class="card p-3 mb-3">
+            <h5 class="mb-3">@Localizer["RecentEvents"]</h5>
+            <ul id="events" class="list-unstyled small mb-0"></ul>
+        </div>
+        <div class="card p-3 mb-3">
+            <h6 class="mb-2">@Localizer["RevenueTrendTitle"]</h6>
+            <div class="chart-shell chart-shell--compact">
+                <canvas id="chartRevenueTrend"></canvas>
+            </div>
+        </div>
         <div class="card p-3">
-            <h5>Eventos recentes</h5>
-            <ul id="events" class="list-unstyled small"></ul>
+            <h6 class="mb-2">@Localizer["OrdersTrendTitle"]</h6>
+            <div class="chart-shell chart-shell--compact">
+                <canvas id="chartOrdersTrend"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -42,20 +94,52 @@
     <div class="row mt-3">
         <div class="col-md-4">
             <div class="card p-3">
-                <h6>Usuários online</h6>
-                <h2 id="usersOnline">0</h2>
+                <h6>@Localizer["UsersOnline"]</h6>
+                <h2 id="usersOnline">1</h2>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card p-3">
-                <h6>Pedidos (últimos 10m)</h6>
+                <h6>@Localizer["OrdersLast10Minutes"]</h6>
                 <h2 id="ordersLast10m">0</h2>
             </div>
         </div>
     </div>
 
 @section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.11/signalr.min.js"></script>
 <script>
+const thousandFormatter = (value) => {
+    if (!value && value !== 0) return value;
+    const val = Number(value);
+    if (Math.abs(val) >= 1000) {
+        const compact = (val / 1000).toFixed(1).replace(/\.0$/, '');
+        return `${compact}k`;
+    }
+    return val;
+};
+
+let combinedChart = null;
+// determine currency mapping from server-provided context
+const currentCulture = (__serverCtx && __serverCtx.currentCulture) || navigator.language || 'en-US';
+const usdToBrl = (__serverCtx && __serverCtx.usdToBrl) || 5.5;
+const usdToArs = (__serverCtx && __serverCtx.usdToArs) || 350;
+const currencyMap = {
+    'pt-BR': { code: 'BRL', multiplier: Number(usdToBrl) },
+    'es-ES': { code: 'ARS', multiplier: Number(usdToArs) },
+    'en-US': { code: 'USD', multiplier: 1 }
+};
+const currencyInfo = currencyMap[currentCulture] || currencyMap['en-US'];
+
+function formatCurrency(value) {
+    try {
+        return new Intl.NumberFormat(currentCulture, { style: 'currency', currency: currencyInfo.code, notation: 'standard', maximumFractionDigits: 2 }).format(value);
+    } catch (e) {
+        return value;
+    }
+}
+
 async function loadRevenue(){
     const resp = await fetch('/Home/RevenueByDay?days=30');
     const data = await resp.json();
@@ -63,11 +147,140 @@ async function loadRevenue(){
     const revenue = data.map(r=> r.revenue);
     const orders = data.map(r=> r.orders);
 
-    const ctx = document.getElementById('chartRevenue');
-    new Chart(ctx, { type: 'line', data: { labels: labels, datasets: [{ label: 'Receita', data: revenue, borderColor: 'rgba(75,192,192,1)', tension:0.2 }, { label: 'Pedidos', data: orders, borderColor: 'rgba(192,75,75,1)', tension:0.2, yAxisID: 'y2' }] }, options: { scales: { y: { beginAtZero:true }, y2: { position: 'right', beginAtZero:true, grid: { drawOnChartArea: false } } } } });
+    const ctxCombined = document.getElementById('chartRevenueCombined');
+    if (ctxCombined) {
+        // convert revenue values according to selected culture
+        const convertedRevenue = revenue.map(v => Number(v) * (currencyInfo.multiplier || 1));
+        combinedChart = new Chart(ctxCombined, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    { label: '@Localizer["RevenueLineLabel"]', data: convertedRevenue, borderColor: 'rgba(75,192,192,1)', backgroundColor: 'rgba(75,192,192,0.2)', tension: 0.25, fill: true },
+                    { label: '@Localizer["OrdersLineLabel"]', data: orders, borderColor: 'rgba(192,75,75,1)', tension: 0.25, yAxisID: 'y2' }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.dataset.label || '';
+                                const labelLower = label.toLowerCase();
+                                const value = context.parsed?.y ?? context.parsed ?? context.raw;
+                                if (label && (labelLower.includes('receit') || labelLower.includes('revenue'))) {
+                                    return `${label}: ${new Intl.NumberFormat(currentCulture, { style: 'currency', currency: currencyInfo.code }).format(value)}`;
+                                }
+                                return `${label}: ${value}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(v) {
+                                try {
+                                    return new Intl.NumberFormat(currentCulture, { style: 'currency', currency: currencyInfo.code, notation: 'compact', maximumFractionDigits: 1 }).format(v);
+                                } catch (e) { return thousandFormatter(v); }
+                            }
+                        }
+                    },
+                    y2: {
+                        position: 'right',
+                        beginAtZero: true,
+                        grid: { drawOnChartArea: false },
+                        ticks: {
+                            callback: function(v) { return thousandFormatter(v); }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    const ctxRevenue = document.getElementById('chartRevenueTrend');
+    if (ctxRevenue) {
+        new Chart(ctxRevenue, {
+            type: 'bar',
+            data: { labels, datasets: [{ label: '@Localizer["RevenueLineLabel"]', data: revenue, backgroundColor: 'rgba(83, 105, 248, 0.9)' }] },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: thousandFormatter }
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
+
+    const ctxOrders = document.getElementById('chartOrdersTrend');
+    if (ctxOrders) {
+        new Chart(ctxOrders, {
+            type: 'bar',
+            data: { labels, datasets: [{ label: '@Localizer["OrdersLineLabel"]', data: orders, backgroundColor: 'rgba(249, 135, 69, 0.9)' }] },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, ticks: { callback: thousandFormatter } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
 }
 
 loadRevenue();
+
+const exportPngBtn = document.getElementById('exportCombinedPng');
+const exportCsvBtn = document.getElementById('exportCombinedCsv');
+if (exportPngBtn) {
+    exportPngBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        downloadChartImage(combinedChart, 'revenue-orders');
+    });
+}
+if (exportCsvBtn) {
+    exportCsvBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        downloadChartCsv(combinedChart, 'revenue-orders');
+    });
+}
+
+function downloadChartImage(chart, name) {
+    if (!chart) return;
+    const link = document.createElement('a');
+    link.href = chart.toBase64Image();
+    link.download = `${name}.png`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+}
+
+function downloadChartCsv(chart, name) {
+    if (!chart) return;
+    const rows = [['label', ...chart.data.labels]];
+    chart.data.datasets.forEach(ds => {
+        rows.push([ds.label, ...ds.data]);
+    });
+    const blob = new Blob([rows.map(r => r.join(',')).join('\n')], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${name}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
 
 // SignalR for live events (simple)
 const hub = new signalR.HubConnectionBuilder().withUrl('/hubs/dashboard').build();
@@ -98,5 +311,4 @@ hub.on('ordersLast10m', cnt => {
 
 hub.start();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.11/signalr.min.js"></script>
 }

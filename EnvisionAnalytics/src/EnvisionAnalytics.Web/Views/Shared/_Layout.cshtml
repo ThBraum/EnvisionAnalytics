@@ -1,3 +1,14 @@
+@using System.Text.Json
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    var snackbarSuccess = TempData["SnackbarSuccess"] as string ?? ViewData["SnackbarSuccess"] as string;
+    var snackbarError = TempData["SnackbarError"] as string ?? ViewData["SnackbarError"] as string;
+    var currentPathAndQuery = (Context.Request.Path + Context.Request.QueryString.ToString());
+    if (string.IsNullOrWhiteSpace(currentPathAndQuery))
+    {
+        currentPathAndQuery = "/";
+    }
+}
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -5,34 +16,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EnvisionAnalytics - @ViewData["Title"]</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="/css/site.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">EnvisionAnalytics</a>
-            <div class="d-flex">
-                @if (User?.Identity?.IsAuthenticated ?? false)
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">@Localizer["EnvisionAnalytics"]</a>
+                <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                    @if (User?.Identity?.IsAuthenticated ?? false)
                 {
-                    <span class="navbar-text text-light me-2">@User.Identity.Name</span>
+                            <span class="navbar-text text-light me-2">@(User?.Identity?.Name ?? "")</span>
                     <form method="post" asp-controller="Account" asp-action="Logout"> 
-                        <button class="btn btn-sm btn-outline-light">Logout</button>
+                                <button class="btn btn-sm btn-outline-light">@Localizer["Logout"]</button>
                     </form>
                 }
                 else
                 {
-                    <a class="btn btn-sm btn-outline-light me-2" href="/Account/Login">Login</a>
-                    <a class="btn btn-sm btn-outline-light" href="/Account/Register">Register</a>
+                            <a class="btn btn-sm btn-outline-light me-2" href="/Account/Login">@Localizer["Login"]</a>
+                            <a class="btn btn-sm btn-outline-light" href="/Account/Register">@Localizer["Register"]</a>
                 }
+                        <!-- Language selector -->
+                        <div class="ms-3">
+                            <form id="langForm" method="get" action="/Localization/SetCulture">
+                                <input type="hidden" name="returnUrl" value="@currentPathAndQuery" />
+                                    <select name="culture" id="cultureSelect" class="form-select form-select-sm" onchange="document.getElementById('langForm').submit()" aria-label="Selecionar idioma">
+                                    <option value="en-US" selected="@(System.Threading.Thread.CurrentThread.CurrentCulture.Name == "en-US" ? "selected" : null)">EN (US) 🇺🇸</option>
+                                    <option value="pt-BR" selected="@(System.Threading.Thread.CurrentThread.CurrentCulture.Name == "pt-BR" ? "selected" : null)">PT (BR) 🇧🇷</option>
+                                    <option value="es-ES" selected="@(System.Threading.Thread.CurrentThread.CurrentCulture.Name == "es-ES" ? "selected" : null)">ES (ES) 🇪🇸</option>
+                                </select>
+                            </form>
+                        </div>
             </div>
         </div>
     </nav>
     <div class="container mt-4">
         @RenderBody()
     </div>
+    <div id="snackbar" class="snackbar" role="status" aria-live="polite" aria-hidden="true">
+        <span class="snackbar__icon bi" aria-hidden="true"></span>
+        <span class="snackbar__text"></span>
+        <button type="button" class="snackbar__close" aria-label="Fechar aviso" title="Fechar">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            const snackbar = document.getElementById('snackbar');
+            const snackbarText = snackbar?.querySelector('.snackbar__text');
+            const snackbarIcon = snackbar?.querySelector('.snackbar__icon');
+            const snackbarClose = snackbar?.querySelector('.snackbar__close');
+            const iconByType = {
+                success: 'bi-check-circle-fill',
+                error: 'bi-x-circle-fill'
+            };
+
+            function clearTimers() {
+                const hideId = snackbar?.dataset.hideTimeoutId;
+                const fadeId = snackbar?.dataset.fadeTimeoutId;
+                if (hideId) {
+                    clearTimeout(Number(hideId));
+                }
+                if (fadeId) {
+                    clearTimeout(Number(fadeId));
+                }
+                if (snackbar) {
+                    delete snackbar.dataset.hideTimeoutId;
+                    delete snackbar.dataset.fadeTimeoutId;
+                }
+            }
+
+            function hideSnackbar() {
+                if (!snackbar) return;
+                clearTimers();
+                snackbar.classList.remove('show', 'is-fading', 'snackbar-success', 'snackbar-error');
+                snackbar.setAttribute('aria-hidden', 'true');
+            }
+
+            window.showSnackbar = function (message, type) {
+                if (!snackbar || !snackbarText || !message) return;
+                const kind = type === 'error' ? 'error' : 'success';
+                snackbarText.textContent = message;
+                if (snackbarIcon) {
+                    snackbarIcon.className = `snackbar__icon bi ${iconByType[kind]}`;
+                }
+                snackbar.classList.remove('snackbar-success', 'snackbar-error', 'show', 'is-fading');
+                snackbar.classList.add(kind === 'success' ? 'snackbar-success' : 'snackbar-error', 'show');
+                snackbar.setAttribute('aria-hidden', 'false');
+                clearTimers();
+                const fadeTimeoutId = window.setTimeout(() => snackbar.classList.add('is-fading'), 3500);
+                const hideTimeoutId = window.setTimeout(() => hideSnackbar(), 5000);
+                snackbar.dataset.fadeTimeoutId = fadeTimeoutId.toString();
+                snackbar.dataset.hideTimeoutId = hideTimeoutId.toString();
+            };
+
+            if (snackbarClose) {
+                snackbarClose.addEventListener('click', hideSnackbar);
+            }
+
+            document.addEventListener('click', function (evt) {
+                const toggleButton = evt.target.closest('.toggle-password');
+                if (!toggleButton) return;
+                const targetId = toggleButton.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                if (!input) return;
+                const isHidden = input.getAttribute('type') === 'password';
+                input.setAttribute('type', isHidden ? 'text' : 'password');
+                const icon = toggleButton.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('bi-eye');
+                    icon.classList.toggle('bi-eye-slash');
+                }
+                toggleButton.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+            });
+
+            function renderQueuedSnackbars() {
+                const successMessage = @Html.Raw(JsonSerializer.Serialize(snackbarSuccess ?? string.Empty));
+                const errorMessage = @Html.Raw(JsonSerializer.Serialize(snackbarError ?? string.Empty));
+                if (successMessage)
+                {
+                    window.showSnackbar(successMessage, 'success');
+                }
+                if (errorMessage)
+                {
+                    window.showSnackbar(errorMessage, 'error');
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', renderQueuedSnackbars);
+            } else {
+                renderQueuedSnackbars();
+            }
+        })();
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

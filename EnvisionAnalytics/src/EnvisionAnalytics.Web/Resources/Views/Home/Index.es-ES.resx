@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Dashboard" xml:space="preserve"><value>Panel</value></data>
+  <data name="RevenueToday" xml:space="preserve"><value>Ingresos hoy</value></data>
+  <data name="OrdersToday" xml:space="preserve"><value>Pedidos hoy</value></data>
+  <data name="ActiveUsers" xml:space="preserve"><value>Usuarios activos (7d)</value></data>
+  <data name="RevenueChartTitle" xml:space="preserve"><value>Ingresos vs Pedidos</value></data>
+  <data name="RevenueChartSubtitle" xml:space="preserve"><value>Últimos 30 días</value></data>
+  <data name="RecentEvents" xml:space="preserve"><value>Eventos recientes</value></data>
+  <data name="RevenueTrendTitle" xml:space="preserve"><value>Tendencia de ingresos</value></data>
+  <data name="OrdersTrendTitle" xml:space="preserve"><value>Tendencia de pedidos</value></data>
+  <data name="RevenueLineLabel" xml:space="preserve"><value>Ingresos</value></data>
+  <data name="OrdersLineLabel" xml:space="preserve"><value>Pedidos</value></data>
+  <data name="ExportLabel" xml:space="preserve"><value>Exportar</value></data>
+  <data name="ExportPng" xml:space="preserve"><value>Imagen PNG</value></data>
+  <data name="ExportCsv" xml:space="preserve"><value>Datos CSV</value></data>
+  <data name="HeroTagline" xml:space="preserve"><value>Panel analítico en tiempo real</value></data>
+  <data name="HeroHeading" xml:space="preserve"><value>Convierte datos en decisiones ágiles</value></data>
+  <data name="HeroSubtext" xml:space="preserve"><value>Paneles interactivos y en tiempo real con métricas clave, gráficos y eventos recientes. Gestiona pedidos, sigue ingresos y exporta informes — con control de acceso por roles y soporte multilingüe.</value></data>
+  <data name="HeroDisclaimer" xml:space="preserve"><value>Datos de demostración únicamente; no representan clientes reales.</value></data>
+  <data name="HeroCtaPrimary" xml:space="preserve"><value>Comienza gratis</value></data>
+  <data name="HeroCtaSecondary" xml:space="preserve"><value>Más información</value></data>
+  <data name="UsersOnline" xml:space="preserve"><value>Usuarios en línea</value></data>
+  <data name="OrdersLast10Minutes" xml:space="preserve"><value>Pedidos (últimos 10m)</value></data>
+</root>

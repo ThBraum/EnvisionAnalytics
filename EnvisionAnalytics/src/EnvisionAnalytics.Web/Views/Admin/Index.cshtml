@@ -1,21 +1,28 @@
+@using System.Linq
 @model IEnumerable<object>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
+    ViewData["Title"] = Localizer["AdminUsersTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Admin - Users</h3>
+<h3>@Localizer["AdminUsersTitle"]</h3>
 <table class="table">
-<thead><tr><th>User</th><th>Email</th><th>Roles</th></tr></thead>
+<thead><tr><th>@Localizer["User"]</th><th>@Localizer["Email"]</th><th>@Localizer["Roles"]</th></tr></thead>
 <tbody>
 @foreach(var u in Model){
+    var type = u?.GetType();
+    var userName = type?.GetProperty("UserName")?.GetValue(u)?.ToString() ?? string.Empty;
+    var email = type?.GetProperty("Email")?.GetValue(u)?.ToString() ?? string.Empty;
+    var rolesValue = type?.GetProperty("Roles")?.GetValue(u) as IEnumerable<string> ?? Enumerable.Empty<string>();
     <tr>
-        <td>@u.GetType().GetProperty("UserName").GetValue(u)</td>
-        <td>@u.GetType().GetProperty("Email").GetValue(u)</td>
-        <td>@string.Join(", ", (IEnumerable<string>)u.GetType().GetProperty("Roles").GetValue(u))</td>
+        <td>@userName</td>
+        <td>@email</td>
+        <td>@string.Join(", ", rolesValue)</td>
     </tr>
 }
 </tbody>
 </table>
 <form method="post" asp-action="AddRole" class="row g-2">
-    <div class="col-auto"><input name="role" class="form-control" placeholder="Role name"/></div>
-    <div class="col-auto"><button class="btn btn-primary">Add Role</button></div>
+    <div class="col-auto"><input name="role" class="form-control" placeholder="@Localizer["RoleNamePlaceholder"]"/></div>
+    <div class="col-auto"><button class="btn btn-primary">@Localizer["AddRoleButton"]</button></div>
 </form>

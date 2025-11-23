@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="RegisterTitle" xml:space="preserve"><value>Registrarse</value></data>
+  <data name="CreateAccount" xml:space="preserve"><value>Crea tu cuenta</value></data>
+  <data name="UserName" xml:space="preserve"><value>Nombre de usuario</value></data>
+  <data name="WorkEmail" xml:space="preserve"><value>Correo de trabajo</value></data>
+  <data name="Password" xml:space="preserve"><value>Contraseña</value></data>
+  <data name="ConfirmPassword" xml:space="preserve"><value>Confirmar contraseña</value></data>
+</root>

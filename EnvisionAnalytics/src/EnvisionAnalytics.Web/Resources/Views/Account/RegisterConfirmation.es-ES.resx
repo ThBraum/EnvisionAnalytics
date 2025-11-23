@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="RegisterConfirmationTitle" xml:space="preserve"><value>Confirma tu correo</value></data>
+  <data name="RegisterConfirmationMessage" xml:space="preserve"><value>Ingresa el código de 6 dígitos enviado a tu correo.</value></data>
+  <data name="EmailLabel" xml:space="preserve"><value>Correo</value></data>
+  <data name="CodeLabel" xml:space="preserve"><value>Código de verificación</value></data>
+  <data name="CodeHelper" xml:space="preserve"><value>Solo números. Expira en 30 minutos.</value></data>
+  <data name="SubmitCodeButton" xml:space="preserve"><value>Verificar correo</value></data>
+  <data name="ResendCodeButton" xml:space="preserve"><value>Reenviar código</value></data>
+</root>

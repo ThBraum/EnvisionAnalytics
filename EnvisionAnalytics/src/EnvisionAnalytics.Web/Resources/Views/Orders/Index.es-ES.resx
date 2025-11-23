@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Orders" xml:space="preserve"><value>Pedidos</value></data>
+  <data name="Any" xml:space="preserve"><value>Cualquiera</value></data>
+  <data name="Completed" xml:space="preserve"><value>Completado</value></data>
+  <data name="Cancelled" xml:space="preserve"><value>Cancelado</value></data>
+  <data name="MinAmount" xml:space="preserve"><value>Importe mínimo</value></data>
+  <data name="Filter" xml:space="preserve"><value>Filtrar</value></data>
+  <data name="ExportCsv" xml:space="preserve"><value>Exportar CSV</value></data>
+  <data name="Loading" xml:space="preserve"><value>Cargando...</value></data>
+  <data name="Date" xml:space="preserve"><value>Fecha</value></data>
+  <data name="Customer" xml:space="preserve"><value>Cliente</value></data>
+  <data name="Status" xml:space="preserve"><value>Estado</value></data>
+  <data name="Total" xml:space="preserve"><value>Total</value></data>
+</root>

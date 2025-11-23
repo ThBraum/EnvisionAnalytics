@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="ConfirmEmailFailedTitle" xml:space="preserve"><value>Error al confirmar el correo</value></data>
+  <data name="ConfirmEmailFailedMessage" xml:space="preserve"><value>Hubo un problema al confirmar su correo.</value></data>
+</root>

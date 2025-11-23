@@ -1,5 +1,7 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
+    ViewData["Title"] = Localizer["ConfirmEmailFailedTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Email Confirmation Failed</h3>
-<p>There was a problem confirming your email.</p>
+<h3>@Localizer["ConfirmEmailFailedTitle"]</h3>
+<p>@Localizer["ConfirmEmailFailedMessage"]</p>

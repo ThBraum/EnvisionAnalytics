@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="ConfirmEmailSuccessTitle" xml:space="preserve"><value>E-mail confirmado</value></data>
+  <data name="ConfirmEmailSuccessMessage" xml:space="preserve"><value>Seu e-mail foi confirmado. Agora você pode</value></data>
+  <data name="Login" xml:space="preserve"><value>entrar</value></data>
+</root>

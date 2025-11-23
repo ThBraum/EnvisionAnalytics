@@ -1,5 +1,34 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
+    ViewData["Title"] = Localizer["RegisterConfirmationTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var email = ViewData["Email"]?.ToString() ?? string.Empty;
 }
-<h3>Register</h3>
-<p>Check your email for a confirmation link.</p>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title mb-3">@Localizer["RegisterConfirmationTitle"]</h3>
+                <p class="text-muted">@Localizer["RegisterConfirmationMessage"]</p>
+
+                <form asp-action="VerifyRegistrationCode" method="post" class="mb-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="emailInput">@Localizer["EmailLabel"]</label>
+                        <input id="emailInput" name="email" value="@email" class="form-control" type="email" autocomplete="email" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="codeInput">@Localizer["CodeLabel"]</label>
+                        <input id="codeInput" name="code" class="form-control" maxlength="6" pattern="[0-9]{6}" autocomplete="one-time-code" required />
+                        <div class="form-text">@Localizer["CodeHelper"]</div>
+                    </div>
+                    <button class="btn btn-primary w-100" type="submit">@Localizer["SubmitCodeButton"]</button>
+                </form>
+
+                <form asp-action="ResendRegistrationCode" method="post" class="text-center">
+                    <input type="hidden" name="email" value="@email" />
+                    <button class="btn btn-link" type="submit">@Localizer["ResendCodeButton"]</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

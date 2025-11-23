@@ -1,15 +1,23 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
+    ViewData["Title"] = Localizer["Orders"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Orders</h3>
+<h3>@Localizer["Orders"]</h3>
 <form id="filters" class="row g-2 mb-3">
     <div class="col-auto"><input class="form-control" type="date" name="start" /></div>
     <div class="col-auto"><input class="form-control" type="date" name="end" /></div>
-    <div class="col-auto"><select name="status" class="form-select"><option value="">Any</option><option>Completed</option><option>Cancelled</option></select></div>
-    <div class="col-auto"><input class="form-control" type="number" step="0.01" name="minAmount" placeholder="Min Amount" /></div>
+    <div class="col-auto">
+        <select name="status" class="form-select">
+            <option value="">@Localizer["Any"]</option>
+            <option>@Localizer["Completed"]</option>
+            <option>@Localizer["Cancelled"]</option>
+        </select>
+    </div>
+    <div class="col-auto"><input class="form-control" type="number" step="0.01" name="minAmount" placeholder="@Localizer["MinAmount"]" /></div>
     <div class="col-auto"><select id="pageSize" class="form-select" style="width:120px"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option></select></div>
-    <div class="col-auto"><button class="btn btn-primary" id="btnFilter">Filtrar</button></div>
-    <div class="col-auto"><a id="export" class="btn btn-outline-secondary">Export CSV</a></div>
+    <div class="col-auto"><button class="btn btn-primary" id="btnFilter">@Localizer["Filter"]</button></div>
+    <div class="col-auto"><a id="export" class="btn btn-outline-secondary">@Localizer["ExportCsv"]</a></div>
 </form>
 
 <div id="table" class="table-responsive"></div>
@@ -30,12 +38,12 @@ async function load(page=1){
     params.append('sortBy', currentSortBy);
     params.append('sortDir', currentSortDir);
 
-    document.getElementById('table').innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    document.getElementById('table').innerHTML = `<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">${encodeURIComponent('@Localizer["Loading"]')}</span></div></div>`;
 
     const resp = await fetch('/Orders/List?'+params.toString());
     const j = await resp.json();
     const rows = j.items.map(o=> `<tr><td>${new Date(o.orderDate).toLocaleString()}</td><td>${o.customer?.name||''}</td><td>${o.status}</td><td>${o.totalAmount}</td></tr>`).join('');
-    document.getElementById('table').innerHTML = `<table class='table'><thead><tr><th><a href='#' data-sort='OrderDate'>Date</a></th><th><a href='#' data-sort='Customer'>Customer</a></th><th>Status</th><th><a href='#' data-sort='TotalAmount'>Total</a></th></tr></thead><tbody>${rows}</tbody></table>`;
+    document.getElementById('table').innerHTML = `<table class='table'><thead><tr><th><a href='#' data-sort='OrderDate'>${encodeURIComponent('@Localizer["Date"]')}</a></th><th><a href='#' data-sort='Customer'>${encodeURIComponent('@Localizer["Customer"]')}</a></th><th>${encodeURIComponent('@Localizer["Status"]')}</th><th><a href='#' data-sort='TotalAmount'>${encodeURIComponent('@Localizer["Total"]')}</a></th></tr></thead><tbody>${rows}</tbody></table>`;
 
     // pagination
     const total = j.total;
