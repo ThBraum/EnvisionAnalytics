@@ -1,5 +1,7 @@
 using System;
 using System.Threading;
+using DotNetEnv;
+using Npgsql;
 using EnvisionAnalytics.Data;
 using EnvisionAnalytics.Models;
 using EnvisionAnalytics.Services;
@@ -9,6 +11,16 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+
+try
+{
+    Env.Load();
+}
+catch (Exception ex)
+{
+    Console.Error.WriteLine("Env.Load() failed: " + ex);
+    System.Diagnostics.Debug.WriteLine("Env.Load() failed: " + ex);
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +34,44 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-var conn = builder.Configuration.GetConnectionString("Default") ?? Environment.GetEnvironmentVariable("CONNECTIONSTRING") ?? "Host=db;Database=envision;Username=postgres;Password=postgres";
+// Determine connection string: prefer Configuration -> environment -> DATABASE_URL -> default
+string? conn = builder.Configuration.GetConnectionString("Default");
+if (string.IsNullOrWhiteSpace(conn)) conn = Environment.GetEnvironmentVariable("CONNECTIONSTRING");
+if (string.IsNullOrWhiteSpace(conn))
+{
+    var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ?? Environment.GetEnvironmentVariable("DATABASEURI");
+    if (!string.IsNullOrWhiteSpace(dbUrl))
+    {
+        // DATABASE_URL format: postgres://user:pass@host:port/dbname
+        try
+        {
+            conn = ConvertDatabaseUrlToConnectionString(dbUrl);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning("Failed to parse DATABASE_URL: {Message}", ex.Message);
+        }
+    }
+}
+if (string.IsNullOrWhiteSpace(conn)) conn = "Host=db;Database=envision;Username=postgres;Password=postgres";
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(conn));
+
+static string ConvertDatabaseUrlToConnectionString(string databaseUrl)
+{
+    var uri = new Uri(databaseUrl);
+    var userInfo = uri.UserInfo.Split(':', StringSplitOptions.RemoveEmptyEntries);
+    var builder = new NpgsqlConnectionStringBuilder
+    {
+        Host = uri.Host,
+        Port = uri.Port > 0 ? uri.Port : 5432,
+        Username = userInfo.Length > 0 ? userInfo[0] : string.Empty,
+        Password = userInfo.Length > 1 ? userInfo[1] : string.Empty,
+        Database = uri.AbsolutePath.TrimStart('/'),
+        SslMode = SslMode.Require,
+        Pooling = true
+    };
+    return builder.ToString();
+}
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
