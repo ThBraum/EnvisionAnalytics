@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Más información</value>
+  </data>
+  <data name="PillLabel" xml:space="preserve">
+    <value>Inteligencia en tiempo real</value>
+  </data>
+  <data name="HeroHeading" xml:space="preserve">
+    <value>Transformando operaciones en decisiones más rápidas</value>
+  </data>
+  <data name="HeroLead" xml:space="preserve">
+    <value>Paneles multilingües, exportables y con seguridad basada en roles para que los equipos globales tengan los mismos números. El panel web replica lo que tenemos en Login/Register con capas translúcidas moradas, un CTA claro y métricas que respiran.</value>
+  </data>
+  <data name="HighlightKpiTitle" xml:space="preserve">
+    <value>+120 KPIs</value>
+  </data>
+  <data name="HighlightKpiDescription" xml:space="preserve">
+    <value>Métricas financieras y operativas conectadas en un solo lienzo.</value>
+  </data>
+  <data name="HighlightStreamingTitle" xml:space="preserve">
+    <value>Live streaming</value>
+  </data>
+  <data name="HighlightStreamingDescription" xml:space="preserve">
+    <value>Actualizaciones en tiempo real vía SignalR que destacan pedidos y usuarios en línea.</value>
+  </data>
+  <data name="HighlightExportTitle" xml:space="preserve">
+    <value>Export &amp; Share</value>
+  </data>
+  <data name="HighlightExportDescription" xml:space="preserve">
+    <value>Informes listos para CSV/PNG con un solo clic.</value>
+  </data>
+  <data name="PrimaryCta" xml:space="preserve">
+    <value>Comenzar ahora</value>
+  </data>
+  <data name="SecondaryCta" xml:space="preserve">
+    <value>Ver demo</value>
+  </data>
+  <data name="ProfileRoleLabel" xml:space="preserve">
+    <value>Product &amp; Experience</value>
+  </data>
+  <data name="ProfileBio" xml:space="preserve">
+    <value>Creo experiencias que ponen los datos en manos de quienes deciden. Contáctame para hablar de UI moderna, arquitectura front/back y cómo convertir ideas en productos navegables.</value>
+  </data>
+  <data name="MetricsAvailabilityValue" xml:space="preserve">
+    <value>99,9%</value>
+  </data>
+  <data name="MetricsAvailabilityDescription" xml:space="preserve">
+    <value>Disponibilidad proyectada con métricas resilientes.</value>
+  </data>
+  <data name="MetricsLanguagesValue" xml:space="preserve">
+    <value>3 idiomas</value>
+  </data>
+  <data name="MetricsLanguagesDescription" xml:space="preserve">
+    <value>Interfaz localizada (EN, PT-BR, ES) lista para crecer.</value>
+  </data>
+  <data name="MetricsRoleBasedValue" xml:space="preserve">
+    <value>Basado en roles</value>
+  </data>
+  <data name="MetricsRoleBasedDescription" xml:space="preserve">
+    <value>Permisos granulares para finanzas, operaciones y CX.</value>
+  </data>
+  <data name="TimelineOnboardingTitle" xml:space="preserve">
+    <value>Onboarding</value>
+  </data>
+  <data name="TimelineOnboardingDescription" xml:space="preserve">
+    <value>Configuración guiada, importación demo y seeds para mostrar valor en minutos.</value>
+  </data>
+  <data name="TimelineOperationsTitle" xml:space="preserve">
+    <value>Operaciones</value>
+  </data>
+  <data name="TimelineOperationsDescription" xml:space="preserve">
+    <value>Monitoreo de pedidos, tendencias de ingresos y alertas en vivo.</value>
+  </data>
+  <data name="TimelineInsightsTitle" xml:space="preserve">
+    <value>Insights</value>
+  </data>
+  <data name="TimelineInsightsDescription" xml:space="preserve">
+    <value>Exportar informes, compartir snapshots y conectar BI externos.</value>
+  </data>
+</root>

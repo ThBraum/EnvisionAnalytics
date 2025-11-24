@@ -1,37 +1,41 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @{
-    ViewData["Title"] = "Learn more";
+    ViewData["Title"] = Localizer["PageTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="about-page py-4">
     <section class="about-hero">
-        <span class="about-pill">Real-time intelligence</span>
-        <h1 class="mt-3">Transformando operações em decisões mais rápidas</h1>
+        <span class="about-pill">@Localizer["PillLabel"]</span>
+        <h1 class="mt-3">@Localizer["HeroHeading"]</h1>
         <p class="lead text-white-50 mb-4">
-            Dashboards multilíngues, exportáveis e com segurança baseada em papéis para que times globais tenham os mesmos números.
-            O painel web replica o que temos em Login/Register, com camadas translúcidas roxas, CTA claro e métricas que respiram.
+            @Localizer["HeroLead"]
         </p>
 
         <div class="about-hero__grid">
             <div class="about-highlight">
-                <strong>+120 KPIs</strong>
-                <span>Métricas financeiras e operacionais conectadas em um único canvas.</span>
+                <strong>@Localizer["HighlightKpiTitle"]</strong>
+                <span>@Localizer["HighlightKpiDescription"]</span>
             </div>
             <div class="about-highlight">
-                <strong>Live streaming</strong>
-                <span>Atualizações em tempo real via SignalR destacam pedidos e usuários online.</span>
+                <strong>@Localizer["HighlightStreamingTitle"]</strong>
+                <span>@Localizer["HighlightStreamingDescription"]</span>
             </div>
             <div class="about-highlight">
-                <strong>Export &amp; Share</strong>
-                <span>Relatórios prontos para CSV/PNG com um clique.</span>
+                <strong>@Localizer["HighlightExportTitle"]</strong>
+                <span>@Localizer["HighlightExportDescription"]</span>
             </div>
         </div>
 
         <div class="about-cta">
-            <a href="/Account/Register" class="btn btn-primary btn-lg cta-btn">
-                <span class="btn-label">Começar agora</span>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg cta-btn">
+                <span class="btn-label">@Localizer["PrimaryCta"]</span>
             </a>
-            <a href="/" class="btn btn-outline-light btn-lg cta-btn-outline">Ver demonstração</a>
+            <a asp-controller="Home" asp-action="Index" asp-fragment="demo" class="btn btn-outline-light btn-lg cta-btn-outline">
+                @Localizer["SecondaryCta"]
+            </a>
         </div>
     </section>
 
@@ -39,12 +43,9 @@
         <div class="col-lg-5">
             <div class="profile-card h-100">
                 <div class="profile-card__avatar" aria-hidden="true">MB</div>
-                <p class="mb-1 text-uppercase small text-white-50">Product &amp; Experience</p>
+                <p class="mb-1 text-uppercase small text-white-50">@Localizer["ProfileRoleLabel"]</p>
                 <h3 class="mb-2">Matheus Thomaz Braum</h3>
-                <p class="text-white-50 mb-3">
-                    Crio experiências que colocam dados na mão de quem decide. Pingue-me para falar sobre UI moderna,
-                    arquitetura front/back e como transformar ideias em produtos navegáveis.
-                </p>
+                <p class="text-white-50 mb-3">@Localizer["ProfileBio"]</p>
                 <div class="profile-card__links">
                     <a href="https://www.linkedin.com/in/matheus-thomaz-braum/" target="_blank" rel="noopener">
                         <i class="bi bi-linkedin"></i>
@@ -60,31 +61,31 @@
         <div class="col-lg-7">
             <div class="about-metrics mb-4">
                 <div class="about-metric">
-                    <strong>99.9%</strong>
-                    <span>Disponibilidade projetada com métricas resilientes.</span>
+                    <strong>@Localizer["MetricsAvailabilityValue"]</strong>
+                    <span>@Localizer["MetricsAvailabilityDescription"]</span>
                 </div>
                 <div class="about-metric">
-                    <strong>3 idiomas</strong>
-                    <span>Interface localizada (EN, PT-BR, ES) pronta para crescer.</span>
+                    <strong>@Localizer["MetricsLanguagesValue"]</strong>
+                    <span>@Localizer["MetricsLanguagesDescription"]</span>
                 </div>
                 <div class="about-metric">
-                    <strong>Role-based</strong>
-                    <span>Permissões granulares para finanças, operações e CX.</span>
+                    <strong>@Localizer["MetricsRoleBasedValue"]</strong>
+                    <span>@Localizer["MetricsRoleBasedDescription"]</span>
                 </div>
             </div>
 
             <div class="about-timeline">
                 <div class="timeline-card">
-                    <h4>Onboarding</h4>
-                    <p>Configuração guiada, importação demo e seeds para mostrar valor em minutos.</p>
+                    <h4>@Localizer["TimelineOnboardingTitle"]</h4>
+                    <p>@Localizer["TimelineOnboardingDescription"]</p>
                 </div>
                 <div class="timeline-card">
-                    <h4>Operações</h4>
-                    <p>Monitoramento de pedidos, revenue trend e alertas ao vivo.</p>
+                    <h4>@Localizer["TimelineOperationsTitle"]</h4>
+                    <p>@Localizer["TimelineOperationsDescription"]</p>
                 </div>
                 <div class="timeline-card">
-                    <h4>Insights</h4>
-                    <p>Exportar relatórios, compartilhar snapshots e conectar BI externos.</p>
+                    <h4>@Localizer["TimelineInsightsTitle"]</h4>
+                    <p>@Localizer["TimelineInsightsDescription"]</p>
                 </div>
             </div>
         </div>
