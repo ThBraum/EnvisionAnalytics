@@ -8,6 +8,9 @@
   <data name="Language" xml:space="preserve"><value>Idioma</value></data>
   <data name="Login" xml:space="preserve"><value>Iniciar sesión</value></data>
   <data name="Logout" xml:space="preserve"><value>Cerrar sesión</value></data>
-  <data name="Register" xml:space="preserve"><value>Registrarse</value></data>
+    <data name="Register" xml:space="preserve"><value>Registrarse</value></data>
+    <data name="ProfileLink" xml:space="preserve">
+      <value>Perfil</value>
+    </data>
   <data name="SiteTitle" xml:space="preserve"><value>Envision Analytics</value></data>
 </root>

@@ -77,4 +77,7 @@
   <data name="Register" xml:space="preserve">
     <value>Registrar</value>
   </data>
+  <data name="ProfileLink" xml:space="preserve">
+    <value>Perfil</value>
+  </data>
 </root>
