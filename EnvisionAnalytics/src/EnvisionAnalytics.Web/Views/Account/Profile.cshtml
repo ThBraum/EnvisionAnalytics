@@ -1,0 +1,75 @@
+@model EnvisionAnalytics.Models.EditProfileViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="profile-page gradient-bg">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="profile-card shadow-lg p-4">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="avatar-circle" aria-hidden="true">@Model.AvatarLetter</div>
+                        <div>
+                            <h2 class="mb-0">@Localizer["ProfileHeading", Model.UserName ?? string.Empty]</h2>
+                            <p class="text-white-50 mb-0">@Model.Email</p>
+                        </div>
+                    </div>
+
+                    <form asp-action="Profile" method="post" class="row g-4">
+                        @Html.AntiForgeryToken()
+                        <div class="col-12">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="UserName" class="form-label">@Localizer["UserNameLabel"]</label>
+                            <input asp-for="UserName" class="form-control form-control-lg" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">@Localizer["EmailLabel"]</label>
+                            <input class="form-control form-control-lg" value="@Model.Email" disabled readonly />
+                        </div>
+
+                        <div class="col-12">
+                            <div class="card bg-dark border-light-subtle">
+                                <div class="card-body">
+                                    <h5 class="card-title">@Localizer["PasswordSectionTitle"]</h5>
+                                    <p class="text-muted mb-4">@Localizer["PasswordSectionHint"]</p>
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label asp-for="CurrentPassword" class="form-label">@Localizer["CurrentPasswordLabel"]</label>
+                                            <input asp-for="CurrentPassword" class="form-control" autocomplete="current-password" />
+                                            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="NewPassword" class="form-label">@Localizer["NewPasswordLabel"]</label>
+                                            <input asp-for="NewPassword" class="form-control" autocomplete="new-password" />
+                                            <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="ConfirmPassword" class="form-label">@Localizer["ConfirmPasswordLabel"]</label>
+                                            <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end gap-3">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-light">@Localizer["CancelButton"]</a>
+                            <button type="submit" class="btn btn-primary">@Localizer["SaveButton"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

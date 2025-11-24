@@ -8,6 +8,10 @@
     {
         currentPathAndQuery = "/";
     }
+    var isAuthenticated = User?.Identity?.IsAuthenticated ?? false;
+    var userDisplayName = User?.Identity?.Name ?? string.Empty;
+    var userInitialSource = (userDisplayName ?? string.Empty).Trim();
+    var userInitial = string.IsNullOrEmpty(userInitialSource) ? "?" : char.ToUpperInvariant(userInitialSource[0]).ToString();
 }
 <!doctype html>
 <html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
@@ -26,10 +30,13 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">@Localizer["EnvisionAnalytics"]</a>
                 <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
-                    @if (User?.Identity?.IsAuthenticated ?? false)
+                    @if (isAuthenticated)
                 {
-                            <span class="navbar-text text-light me-2">@(User?.Identity?.Name ?? "")</span>
-                    <form method="post" asp-controller="Account" asp-action="Logout"> 
+                            <a asp-controller="Account" asp-action="Profile" class="navbar-avatar me-2" aria-label="@Localizer["ProfileLink"]">
+                                <span>@userInitial</span>
+                            </a>
+                            <span class="navbar-text text-light me-2">@userDisplayName</span>
+                    <form method="post" asp-controller="Account" asp-action="Logout">
                                 <button class="btn btn-sm btn-outline-light">@Localizer["Logout"]</button>
                     </form>
                 }

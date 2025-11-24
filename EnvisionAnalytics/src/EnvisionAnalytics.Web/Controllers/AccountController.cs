@@ -2,6 +2,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using EnvisionAnalytics.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -90,7 +91,10 @@ namespace EnvisionAnalytics.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(string userName, string email, string password, string confirmPassword)
         {
-            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            var trimmedUserName = userName?.Trim();
+            var trimmedEmail = email?.Trim();
+
+            if (string.IsNullOrWhiteSpace(trimmedUserName) || string.IsNullOrWhiteSpace(trimmedEmail) || string.IsNullOrWhiteSpace(password))
             {
                 SetSnackbar("All fields are required.", success: false);
                 return View();
@@ -102,7 +106,30 @@ namespace EnvisionAnalytics.Controllers
                 return View();
             }
 
-            var u = new ApplicationUser { UserName = userName, Email = email, EmailConfirmed = false };
+            var existingByName = await _um.FindByNameAsync(trimmedUserName);
+            if (existingByName != null)
+            {
+                SetSnackbar("Username is already taken.", success: false);
+                ModelState.AddModelError("userName", "Username is already taken.");
+                return View();
+            }
+
+            var existingByEmail = await _um.FindByEmailAsync(trimmedEmail);
+            if (existingByEmail != null)
+            {
+                if (!existingByEmail.EmailConfirmed)
+                {
+                    await SendRegistrationCodeAsync(existingByEmail, force: true);
+                    SetSnackbar("This email is already registered but still waiting for confirmation. We just sent you a new code.", success: true, persist: true);
+                    return RedirectToAction("RegisterConfirmation", new { email = trimmedEmail });
+                }
+
+                SetSnackbar("Email is already registered.", success: false);
+                ModelState.AddModelError("email", "Email is already registered.");
+                return View();
+            }
+
+            var u = new ApplicationUser { UserName = trimmedUserName, Email = trimmedEmail, EmailConfirmed = false };
             var res = await _um.CreateAsync(u, password);
             if (!res.Succeeded)
             {
@@ -187,6 +214,106 @@ namespace EnvisionAnalytics.Controllers
 
             SetSnackbar("Unable to confirm email. Please try again.", success: false);
             return View("RegisterConfirmation");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _um.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login");
+
+            var vm = new EditProfileViewModel
+            {
+                UserName = user.UserName ?? string.Empty,
+                Email = user.Email ?? string.Empty
+            };
+
+            return View(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(EditProfileViewModel model)
+        {
+            var user = await _um.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login");
+
+            var trimmedUserName = (model.UserName ?? string.Empty).Trim();
+            if (string.IsNullOrWhiteSpace(trimmedUserName))
+            {
+                ModelState.AddModelError("UserName", "Username is required.");
+                model.UserName = user.UserName;
+                model.Email = user.Email;
+                return View(model);
+            }
+
+            if (!string.Equals(trimmedUserName, user.UserName, StringComparison.OrdinalIgnoreCase))
+            {
+                var userWithSameName = await _um.FindByNameAsync(trimmedUserName);
+                if (userWithSameName != null)
+                {
+                    ModelState.AddModelError("UserName", "This username is already in use.");
+                    model.Email = user.Email;
+                    return View(model);
+                }
+
+                user.UserName = trimmedUserName;
+                user.NormalizedUserName = trimmedUserName.ToUpperInvariant();
+                var updateUserResult = await _um.UpdateAsync(user);
+                if (!updateUserResult.Succeeded)
+                {
+                    foreach (var error in updateUserResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    model.Email = user.Email;
+                    return View(model);
+                }
+            }
+
+            var wantsPasswordChange = !string.IsNullOrWhiteSpace(model.NewPassword) ||
+                                        !string.IsNullOrWhiteSpace(model.ConfirmPassword) ||
+                                        !string.IsNullOrWhiteSpace(model.CurrentPassword);
+
+            if (wantsPasswordChange)
+            {
+                if (string.IsNullOrWhiteSpace(model.CurrentPassword))
+                {
+                    ModelState.AddModelError("CurrentPassword", "Current password is required to update your password.");
+                    model.Email = user.Email;
+                    return View(model);
+                }
+
+                if (string.IsNullOrWhiteSpace(model.NewPassword) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
+                {
+                    ModelState.AddModelError("NewPassword", "New password and confirmation are required.");
+                    model.Email = user.Email;
+                    return View(model);
+                }
+
+                if (!string.Equals(model.NewPassword, model.ConfirmPassword, StringComparison.Ordinal))
+                {
+                    ModelState.AddModelError("ConfirmPassword", "Password confirmation does not match.");
+                    model.Email = user.Email;
+                    return View(model);
+                }
+
+                var changePasswordResult = await _um.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                if (!changePasswordResult.Succeeded)
+                {
+                    foreach (var error in changePasswordResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    model.Email = user.Email;
+                    return View(model);
+                }
+            }
+
+            SetSnackbar("Profile updated successfully.", success: true, persist: true);
+            return RedirectToAction(nameof(Profile));
         }
 
         [HttpPost]
