@@ -80,4 +80,31 @@
   <data name="ProfileLink" xml:space="preserve">
     <value>Perfil</value>
   </data>
+  <data name="FooterLabel" xml:space="preserve">
+    <value>Footer</value>
+  </data>
+  <data name="FooterBadge" xml:space="preserve">
+    <value>© 2025 Matheus Braum · Demo</value>
+  </data>
+  <data name="FooterSignature" xml:space="preserve">
+    <value>Demo — dados sintéticos para fins de demonstração.</value>
+  </data>
+  <data name="FooterDisclaimer" xml:space="preserve">
+    <value>Todos os painéis e métricas são fictícios e não devem orientar decisões reais.</value>
+  </data>
+  <data name="FooterConnectLabel" xml:space="preserve">
+    <value>Conecte-se</value>
+  </data>
+  <data name="FooterEmailLabel" xml:space="preserve">
+    <value>Enviar email para Matheus Braum</value>
+  </data>
+  <data name="FooterGithubLabel" xml:space="preserve">
+    <value>Abrir perfil no GitHub</value>
+  </data>
+  <data name="FooterLinkedInLabel" xml:space="preserve">
+    <value>Abrir perfil no LinkedIn</value>
+  </data>
+  <data name="FooterDirectLabel" xml:space="preserve">
+    <value>Canais diretos</value>
+  </data>
 </root>

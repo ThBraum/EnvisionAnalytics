@@ -1,16 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <data name="AppName" xml:space="preserve"><value>Envision Analytics</value></data>
-  <data name="NavHome" xml:space="preserve"><value>Inicio</value></data>
-  <data name="NavProducts" xml:space="preserve"><value>Productos</value></data>
-  <data name="NavOrders" xml:space="preserve"><value>Pedidos</value></data>
-  <data name="NavAdmin" xml:space="preserve"><value>Admin</value></data>
-  <data name="Language" xml:space="preserve"><value>Idioma</value></data>
-  <data name="Login" xml:space="preserve"><value>Iniciar sesión</value></data>
-  <data name="Logout" xml:space="preserve"><value>Cerrar sesión</value></data>
-    <data name="Register" xml:space="preserve"><value>Registrarse</value></data>
-    <data name="ProfileLink" xml:space="preserve">
-      <value>Perfil</value>
-    </data>
-  <data name="SiteTitle" xml:space="preserve"><value>Envision Analytics</value></data>
+  <xsd:schema id="root" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+  </resheader>
+  <data name="AppName" xml:space="preserve">
+    <value>Envision Analytics</value>
+  </data>
+  <data name="NavHome" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="NavProducts" xml:space="preserve">
+    <value>Productos</value>
+  </data>
+  <data name="NavOrders" xml:space="preserve">
+    <value>Pedidos</value>
+  </data>
+  <data name="NavAdmin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Registrarse</value>
+  </data>
+  <data name="ProfileLink" xml:space="preserve">
+    <value>Perfil</value>
+  </data>
+  <data name="FooterLabel" xml:space="preserve">
+    <value>Pie del sitio</value>
+  </data>
+  <data name="FooterBadge" xml:space="preserve">
+    <value>© 2025 Matheus Braum · Demo</value>
+  </data>
+  <data name="FooterSignature" xml:space="preserve">
+    <value>Datos sintéticos creados para fines de demostración.</value>
+  </data>
+  <data name="FooterDisclaimer" xml:space="preserve">
+    <value>Todos los paneles y métricas son ficticios; no deben guiar decisiones reales.</value>
+  </data>
+  <data name="FooterConnectLabel" xml:space="preserve">
+    <value>Conectar</value>
+  </data>
+  <data name="FooterEmailLabel" xml:space="preserve">
+    <value>Enviar correo a Matheus Braum</value>
+  </data>
+  <data name="FooterGithubLabel" xml:space="preserve">
+    <value>Abrir perfil en GitHub</value>
+  </data>
+  <data name="FooterLinkedInLabel" xml:space="preserve">
+    <value>Abrir perfil en LinkedIn</value>
+  </data>
+  <data name="FooterDirectLabel" xml:space="preserve">
+    <value>Canales directos</value>
+  </data>
+  <data name="SiteTitle" xml:space="preserve">
+    <value>Envision Analytics</value>
+  </data>
 </root>
