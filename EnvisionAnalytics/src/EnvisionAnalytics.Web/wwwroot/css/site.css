@@ -1,4 +1,3 @@
-
 :root {
 	--ea-bg: #060314;
 	--ea-bg-secondary: #120b32;
@@ -18,7 +17,7 @@ body {
 	background: radial-gradient(circle at top, rgba(108, 99, 255, 0.15), transparent 45%), var(--ea-bg);
 	color: #f8f9ff;
 	min-height: 100vh;
-	padding-bottom: 40px;
+	padding-bottom: 0;
 	position: relative;
 	overflow-x: hidden;
 }
@@ -176,7 +175,7 @@ body {
 .card h6,
 .card .card-title,
 .card .eyebrow {
-	color: rgba(255,255,255,0.72);
+	color: rgba(255, 255, 255, 0.72);
 	font-weight: 600;
 }
 
@@ -185,13 +184,13 @@ body {
 .card .kpi-value {
 	color: var(--ea-panel-accent);
 	font-weight: 700;
-	text-shadow: 0 2px 10px rgba(0,0,0,0.45);
+	text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
 }
 
 /* Subtle secondary numbers (eg. small counters) */
 .card .muted-number,
 .card .small-stat {
-	color: rgba(255,255,255,0.58);
+	color: rgba(255, 255, 255, 0.58);
 }
 
 /* Ensure canvas fallback shows panel background */
@@ -614,11 +613,11 @@ body {
 /* Footer */
 .ea-footer {
 	position: relative;
-	margin-top: clamp(3rem, 6vw, 5.5rem);
-	padding: clamp(3.75rem, 6vw, 6.5rem) 0 clamp(2.5rem, 5vw, 4rem);
+	margin-top: 0;
+	padding: clamp(0.8rem, 1.4vw, 1.2rem) 0;
 	color: #f7f6ff;
 	background: linear-gradient(180deg, rgba(4, 2, 12, 0.98), rgba(8, 5, 20, 0.97));
-	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	border-top: 1px solid rgba(255, 255, 255, 0.06);
 	overflow: hidden;
 }
 
@@ -660,9 +659,9 @@ body {
 	position: relative;
 	z-index: 1;
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: clamp(2rem, 4vw, 4rem);
-	align-items: flex-start;
+	grid-template-columns: 1fr 340px;
+	gap: clamp(1rem, 2vw, 2rem);
+	align-items: center;
 }
 
 .ea-footer__headline {
@@ -674,13 +673,13 @@ body {
 	align-items: center;
 	gap: 0.45rem;
 	font-size: 0.75rem;
-	letter-spacing: 0.16em;
+	letter-spacing: 0.12em;
 	text-transform: uppercase;
-	padding: 0.45rem 1rem;
+	padding: 0.35rem 0.9rem;
 	border-radius: 999px;
-	border: 1px solid rgba(255, 255, 255, 0.15);
-	background: rgba(10, 7, 32, 0.65);
-	box-shadow: inset 0 0 20px rgba(94, 230, 235, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background: rgba(10, 7, 32, 0.6);
+	box-shadow: inset 0 0 12px rgba(94, 230, 235, 0.06);
 }
 
 .ea-footer__badge-icon {
@@ -710,7 +709,7 @@ body {
 
 .ea-footer__panel {
 	position: relative;
-	padding: 1.75rem;
+	padding: 1.25rem; /* tightened padding */
 	border-radius: 28px;
 	background: linear-gradient(135deg, rgba(15, 8, 38, 0.9), rgba(6, 4, 24, 0.95));
 	border: 1px solid rgba(255, 255, 255, 0.08);
@@ -748,7 +747,7 @@ body {
 .ea-footer__icon-link {
 	width: 52px;
 	height: 52px;
-	border-radius: 18px;
+	border-radius: 12px; /* slightly smaller corner to match compact look */
 	display: grid;
 	place-items: center;
 	background: rgba(255, 255, 255, 0.04);
@@ -768,8 +767,19 @@ body {
 .ea-footer__icon-link:focus-visible {
 	transform: translateY(-4px) scale(1.03);
 	border-color: rgba(94, 230, 235, 0.7);
-	background: linear-gradient(135deg, rgba(108, 99, 255, 0.4), rgba(94, 230, 235, 0.25));
+	background: linear-gradient(135deg, rgba(108, 99, 255, 0.18), rgba(94, 230, 235, 0.08));
 	outline: none;
+}
+
+.ea-footer__icon-mail {
+	padding: 0;
+}
+
+.ea-footer__icon-mail svg {
+	width: 22px;
+	height: 22px;
+	display: block;
+	fill: currentColor;
 }
 
 .ea-footer__chips {
@@ -809,6 +819,40 @@ body {
 	.ea-footer__icon-link {
 		width: 46px;
 		height: 46px;
+	}
+
+	/* Mobile: hide panel label and tighten footer spacing, only icons shown */
+	.ea-footer__panel-label {
+		display: none;
+	}
+
+	.ea-footer__wrap {
+		grid-template-columns: 1fr; /* stack */
+		gap: 0.6rem;
+	}
+
+	.ea-footer__panel {
+		padding: 1rem;
+		border-radius: 18px;
+	}
+
+	.ea-footer__headline {
+		text-align: center;
+		order: 2;
+	}
+
+	.ea-footer__panels {
+		justify-self: center;
+		order: 1;
+	}
+
+	.ea-footer__title {
+		font-size: 1.1rem;
+		margin: 0.5rem 0 0.25rem;
+	}
+
+	.ea-footer__subtitle {
+		font-size: 0.9rem;
 	}
 
 	.ea-footer__chips {
@@ -1035,19 +1079,24 @@ body {
 	0% {
 		transform: translate3d(0, 0, 0) scale(1);
 	}
+
 	50% {
 		transform: translate3d(3%, -4%, 0) scale(1.05);
 	}
+
 	100% {
 		transform: translate3d(-2%, 2%, 0) scale(1);
 	}
 }
 
 @keyframes glowPulse {
-	0%, 100% {
+
+	0%,
+	100% {
 		opacity: 0.18;
 		transform: scale(0.9);
 	}
+
 	50% {
 		opacity: 0.4;
 		transform: scale(1.05);
@@ -1058,9 +1107,11 @@ body {
 	0% {
 		transform: translate3d(-2%, 0, 0) scale(1);
 	}
+
 	50% {
 		transform: translate3d(2%, -1%, 0) scale(1.02);
 	}
+
 	100% {
 		transform: translate3d(-1%, 1%, 0) scale(1);
 	}
