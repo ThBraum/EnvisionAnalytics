@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Learn more</value>
+  </data>
+  <data name="PillLabel" xml:space="preserve">
+    <value>Real-time intelligence</value>
+  </data>
+  <data name="HeroHeading" xml:space="preserve">
+    <value>Transforming operations into faster decisions</value>
+  </data>
+  <data name="HeroLead" xml:space="preserve">
+    <value>Multilingual dashboards, exportable and secured with role-based access so global teams see the same numbers. The web dashboard mirrors Login/Register with translucent purple layers, a clear CTA and breathing metrics.</value>
+  </data>
+  <data name="HighlightKpiTitle" xml:space="preserve">
+    <value>+120 KPIs</value>
+  </data>
+  <data name="HighlightKpiDescription" xml:space="preserve">
+    <value>Financial and operational metrics connected on a single canvas.</value>
+  </data>
+  <data name="HighlightStreamingTitle" xml:space="preserve">
+    <value>Live streaming</value>
+  </data>
+  <data name="HighlightStreamingDescription" xml:space="preserve">
+    <value>Real-time updates via SignalR highlight orders and online users.</value>
+  </data>
+  <data name="HighlightExportTitle" xml:space="preserve">
+    <value>Export &amp; Share</value>
+  </data>
+  <data name="HighlightExportDescription" xml:space="preserve">
+    <value>One-click CSV/PNG-ready reports.</value>
+  </data>
+  <data name="PrimaryCta" xml:space="preserve">
+    <value>Get started</value>
+  </data>
+  <data name="SecondaryCta" xml:space="preserve">
+    <value>See demo</value>
+  </data>
+  <data name="ProfileRoleLabel" xml:space="preserve">
+    <value>Product &amp; Experience</value>
+  </data>
+  <data name="ProfileBio" xml:space="preserve">
+    <value>I craft experiences that put data in the hands of decision-makers. Ping me to talk about modern UI, front/back architecture and how to turn ideas into navigable products.</value>
+  </data>
+  <data name="MetricsAvailabilityValue" xml:space="preserve">
+    <value>99.9%</value>
+  </data>
+  <data name="MetricsAvailabilityDescription" xml:space="preserve">
+    <value>Projected availability with resilient metrics.</value>
+  </data>
+  <data name="MetricsLanguagesValue" xml:space="preserve">
+    <value>3 languages</value>
+  </data>
+  <data name="MetricsLanguagesDescription" xml:space="preserve">
+    <value>Localized interface (EN, PT-BR, ES) ready to scale.</value>
+  </data>
+  <data name="MetricsRoleBasedValue" xml:space="preserve">
+    <value>Role-based</value>
+  </data>
+  <data name="MetricsRoleBasedDescription" xml:space="preserve">
+    <value>Granular permissions for finance, operations and CX.</value>
+  </data>
+  <data name="TimelineOnboardingTitle" xml:space="preserve">
+    <value>Onboarding</value>
+  </data>
+  <data name="TimelineOnboardingDescription" xml:space="preserve">
+    <value>Guided setup, demo import and seeds to show value in minutes.</value>
+  </data>
+  <data name="TimelineOperationsTitle" xml:space="preserve">
+    <value>Operations</value>
+  </data>
+  <data name="TimelineOperationsDescription" xml:space="preserve">
+    <value>Order monitoring, revenue trend and live alerts.</value>
+  </data>
+  <data name="TimelineInsightsTitle" xml:space="preserve">
+    <value>Insights</value>
+  </data>
+  <data name="TimelineInsightsDescription" xml:space="preserve">
+    <value>Export reports, share snapshots and connect external BI.</value>
+  </data>
+</root>
